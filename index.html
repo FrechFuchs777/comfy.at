@@ -1,1 +1,870 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>comfy. — Creative Online Marketing For You</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f4eddd;
+      --blue:  #13175b;
+      --lilac: #c4a8d4;
+      --blue-dim: rgba(19,23,91,0.55);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--cream);
+      color: var(--blue);
+      overflow-x: hidden;
+    }
+    body.menu-open { overflow: hidden; }
+
+    /* ─── NAV ─────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 5rem;
+      background: var(--cream);
+      border-bottom: 1px solid rgba(19,23,91,0.08);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 30px rgba(19,23,91,0.06); }
+
+    .nav-logo {
+      font-size: 1.6rem; font-weight: 900; letter-spacing: -0.03em;
+      color: var(--blue); text-decoration: none; flex-shrink: 0;
+    }
+    .nav-logo img {
+      height: 38px;
+      mix-blend-mode: multiply;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a {
+      text-decoration: none; color: var(--blue);
+      font-weight: 600; font-size: 0.9rem; letter-spacing: 0.04em;
+      text-transform: uppercase; opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    /* Both nav CTA buttons — same outline style */
+    .nav-cta {
+      background: transparent; color: var(--blue);
+      padding: 0.65rem 1.4rem; border-radius: 50px;
+      font-weight: 800; font-size: 0.85rem;
+      text-decoration: none; letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 2px solid var(--blue);
+      transition: background 0.2s, color 0.2s;
+      opacity: 1 !important;
+      white-space: nowrap;
+    }
+    .nav-cta:hover { background: var(--blue); color: var(--cream); opacity: 1 !important; }
+
+    /* ─── HAMBURGER ───────────────────────────────────── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column; justify-content: center;
+      gap: 5px; background: none; border: none; cursor: pointer;
+      padding: 10px; z-index: 300; flex-shrink: 0;
+    }
+    .nav-hamburger span {
+      display: block; width: 24px; height: 2.5px;
+      background: var(--blue); border-radius: 2px;
+      transition: transform 0.35s ease, opacity 0.3s ease;
+      transform-origin: center;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+    /* ─── MOBILE MENU ─────────────────────────────────── */
+    .mobile-menu {
+      position: fixed; inset: 0; z-index: 195;
+      background: var(--cream);
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: flex-start;
+      padding: 7rem 2.5rem 3rem;
+      transform: translateX(100%);
+      transition: transform 0.45s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    .mobile-menu.open { transform: translateX(0); }
+
+    .mobile-menu-nav {
+      display: flex; flex-direction: column; gap: 0.2rem;
+      width: 100%; margin-bottom: 3rem;
+    }
+    .mobile-menu-nav a {
+      font-size: clamp(2.2rem, 10vw, 3.2rem);
+      font-weight: 900; text-transform: uppercase;
+      color: var(--blue); text-decoration: none;
+      letter-spacing: -0.03em; line-height: 1.2;
+      opacity: 0.8; transition: opacity 0.2s;
+      padding: 0.2rem 0;
+    }
+    .mobile-menu-nav a:hover { opacity: 1; }
+
+    .mobile-menu-divider {
+      width: 100%; height: 1px;
+      background: rgba(19,23,91,0.1); margin-bottom: 2rem;
+    }
+
+    .mobile-menu-btns {
+      display: flex; flex-direction: column; gap: 0.85rem; width: 100%;
+    }
+    .mobile-btn {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.65rem; width: 100%;
+      padding: 1.15rem 1.5rem; border-radius: 50px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem; font-weight: 800;
+      text-decoration: none; letter-spacing: 0.06em;
+      text-transform: uppercase; transition: 0.2s;
+      color: var(--blue); border: 2px solid var(--blue);
+      background: transparent;
+    }
+    .mobile-btn:hover { background: var(--blue); color: var(--cream); }
+
+    /* ─── HERO ────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr;
+      align-items: center;
+      padding: 9rem 5rem 5rem;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-left { position: relative; z-index: 3; }
+
+    .hero-label {
+      font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.2em; color: var(--lilac);
+      text-transform: uppercase; margin-bottom: 1.75rem;
+    }
+
+    .hero-headline {
+      font-size: clamp(3.8rem, 7.5vw, 7.5rem);
+      font-weight: 900; line-height: 0.93;
+      letter-spacing: -0.025em; text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem; font-weight: 400;
+      line-height: 1.65; max-width: 460px;
+      color: var(--blue-dim); margin-bottom: 3rem;
+    }
+
+    .hero-btns { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; }
+
+    .btn-primary {
+      background: var(--blue); color: var(--cream);
+      padding: 1.05rem 2.5rem; border-radius: 50px;
+      font-weight: 800; font-size: 0.9rem;
+      text-decoration: none; letter-spacing: 0.08em;
+      text-transform: uppercase; transition: 0.2s;
+    }
+    .btn-primary:hover { background: var(--lilac); color: var(--blue); }
+
+    .btn-ghost {
+      color: var(--blue); font-weight: 700; font-size: 0.9rem;
+      text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase;
+      border-bottom: 2px solid var(--lilac); padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--blue); }
+
+    /* ─── TICKER ──────────────────────────────────────── */
+    .ticker {
+      background: var(--blue); padding: 1.2rem 0;
+      overflow: hidden; white-space: nowrap;
+    }
+    .ticker-track {
+      display: inline-flex;
+      animation: scroll-ticker 22s linear infinite;
+    }
+    .ticker-item {
+      font-size: 0.82rem; font-weight: 800;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--cream); padding: 0 2.5rem;
+    }
+    .ticker-item span { color: var(--lilac); margin-left: 2.5rem; }
+    @keyframes scroll-ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ─── INSIGHT ─────────────────────────────────────── */
+    .insight {
+      padding: 9rem 5rem;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 7rem; align-items: center;
+    }
+
+    .section-label {
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--lilac); margin-bottom: 1.5rem;
+    }
+
+    .insight-headline {
+      font-size: clamp(2.8rem, 5vw, 5.5rem);
+      font-weight: 900; text-transform: uppercase;
+      line-height: 0.95; letter-spacing: -0.025em;
+    }
+
+    .insight-text {
+      font-size: 1.15rem; line-height: 1.7;
+      color: var(--blue-dim); margin-bottom: 3rem;
+    }
+
+    .stats { display: flex; gap: 3.5rem; flex-wrap: wrap; }
+
+    .stat-num {
+      font-size: 3.8rem; font-weight: 900;
+      line-height: 1; color: var(--blue);
+    }
+    .stat-num sup { font-size: 2rem; vertical-align: super; }
+
+    .stat-lbl {
+      font-size: 0.78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--lilac); margin-top: 0.3rem;
+    }
+
+    /* ─── SERVICES ────────────────────────────────────── */
+    .services {
+      background: var(--blue);
+      padding: 8rem 5rem;
+      position: relative; overflow: hidden;
+    }
+
+    .services-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; margin-bottom: 4rem;
+    }
+
+    .services-title {
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      font-weight: 900; text-transform: uppercase;
+      color: var(--cream); line-height: 1;
+      letter-spacing: -0.025em;
+    }
+    .services-title .accent { color: var(--lilac); }
+
+    .services-sub {
+      font-size: 1rem; color: rgba(244,237,221,0.55);
+      max-width: 280px; line-height: 1.6; text-align: right;
+    }
+
+    .services-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.75rem;
+    }
+
+    .scard {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(196,168,212,0.18);
+      border-radius: 1.75rem; padding: 3rem;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .scard:hover { border-color: rgba(196,168,212,0.5); }
+
+    .scard-num {
+      position: absolute; top: 1.5rem; right: 2rem;
+      font-size: 6rem; font-weight: 900;
+      color: rgba(196,168,212,0.1); line-height: 1;
+      pointer-events: none;
+    }
+
+    .scard-tag {
+      display: inline-block; background: var(--lilac);
+      color: var(--blue); font-size: 0.72rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.35rem 1rem; border-radius: 50px; margin-bottom: 1.75rem;
+    }
+
+    .scard-title {
+      font-size: 1.9rem; font-weight: 900; color: var(--cream);
+      text-transform: uppercase; line-height: 1.1;
+      letter-spacing: -0.01em; margin-bottom: 1.25rem;
+    }
+
+    .scard-text {
+      font-size: 1rem; line-height: 1.7;
+      color: rgba(244,237,221,0.58); margin-bottom: 2rem;
+    }
+
+    .scard-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .pill {
+      background: rgba(196,168,212,0.12); color: var(--lilac);
+      font-size: 0.78rem; font-weight: 700;
+      padding: 0.35rem 0.9rem; border-radius: 50px;
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── MANIFESTO ───────────────────────────────────── */
+    .manifesto {
+      padding: 10rem 5rem;
+      text-align: center; position: relative; overflow: hidden;
+    }
+
+    .manifesto-quote {
+      font-size: clamp(3rem, 8vw, 8.5rem);
+      font-weight: 900; text-transform: uppercase;
+      line-height: 0.9; letter-spacing: -0.03em;
+      position: relative; z-index: 2;
+    }
+    .manifesto-quote .accent { color: var(--lilac); }
+
+    .manifesto-sub {
+      font-size: 1.2rem; color: var(--blue-dim);
+      margin-top: 3rem; font-weight: 400;
+      position: relative; z-index: 2;
+    }
+
+    .manifesto-paint {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%; opacity: 0.45; pointer-events: none;
+    }
+
+    /* ─── WHY ─────────────────────────────────────────── */
+    .why {
+      padding: 8rem 5rem;
+      display: grid; grid-template-columns: 1fr 2fr;
+      gap: 7rem; align-items: start;
+    }
+
+    .why-sticky { position: sticky; top: 8rem; }
+
+    .why-title {
+      font-size: clamp(2.5rem, 4vw, 4.5rem);
+      font-weight: 900; text-transform: uppercase;
+      line-height: 1; letter-spacing: -0.025em;
+      margin-top: 1rem;
+    }
+
+    .why-grid { display: flex; flex-direction: column; gap: 2.5rem; }
+
+    .why-row {
+      display: grid; grid-template-columns: auto 1fr;
+      gap: 2rem; align-items: start;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(19,23,91,0.1);
+    }
+    .why-row:last-child { border-bottom: none; }
+
+    .why-row-num {
+      font-size: 0.78rem; font-weight: 800;
+      color: var(--lilac); letter-spacing: 0.1em;
+      padding-top: 0.3rem;
+    }
+
+    .why-row-title {
+      font-size: 1.4rem; font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.01em;
+      margin-bottom: 0.75rem;
+    }
+
+    .why-row-text {
+      font-size: 1rem; line-height: 1.7; color: var(--blue-dim);
+    }
+
+    /* ─── CTA SECTION ─────────────────────────────────── */
+    .cta-section {
+      background: var(--blue);
+      padding: 8rem 5rem;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6rem; align-items: center;
+      position: relative; overflow: hidden;
+    }
+
+    .cta-headline {
+      font-size: clamp(2.8rem, 5.5vw, 5.5rem);
+      font-weight: 900; text-transform: uppercase;
+      color: var(--cream); line-height: 0.95;
+      letter-spacing: -0.025em;
+    }
+    .cta-headline .accent { color: var(--lilac); }
+
+    .cta-sub {
+      font-size: 1.1rem; color: rgba(244,237,221,0.55);
+      margin-top: 1.75rem; line-height: 1.6;
+    }
+
+    /* CTA contact buttons — both same outline style on dark bg */
+    .cta-btns {
+      display: flex; flex-direction: column; gap: 1.25rem;
+      justify-content: center;
+    }
+
+    .cta-btn {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.85rem;
+      padding: 1.35rem 2.5rem; border-radius: 50px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 1.05rem; font-weight: 900;
+      text-decoration: none; letter-spacing: 0.06em;
+      text-transform: uppercase; transition: 0.2s;
+      background: rgba(244,237,221,0.1); color: var(--cream);
+      border: 2px solid rgba(244,237,221,0.35);
+    }
+    .cta-btn:hover { background: var(--cream); color: var(--blue); border-color: var(--cream); }
+
+    .cta-btn-icon { font-size: 1.3rem; line-height: 1; }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    footer {
+      padding: 2.5rem 5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid rgba(19,23,91,0.1);
+    }
+
+    .footer-logo img { height: 30px; mix-blend-mode: multiply; }
+
+    .footer-copy {
+      font-size: 0.82rem; color: rgba(19,23,91,0.4); font-weight: 500;
+    }
+
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a {
+      font-size: 0.82rem; color: rgba(19,23,91,0.45);
+      text-decoration: none; font-weight: 600;
+    }
+    .footer-links a:hover { color: var(--blue); }
+
+    /* ─── SCROLL REVEAL ───────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(50px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+    .reveal-d4 { transition-delay: 0.4s; }
+
+    /* ─── RESPONSIVE TABLET (≤ 900px) ────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 1.1rem 1.75rem; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+
+      .hero { padding: 7rem 1.75rem 4.5rem; }
+
+      .insight { grid-template-columns: 1fr; padding: 6rem 1.75rem; gap: 3rem; }
+      .services { padding: 5.5rem 1.75rem; }
+      .services-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .services-sub { text-align: left; max-width: 100%; }
+      .services-grid { grid-template-columns: 1fr; }
+      .manifesto { padding: 7rem 1.75rem; }
+      .why { grid-template-columns: 1fr; padding: 6rem 1.75rem; gap: 3rem; }
+      .why-sticky { position: static; }
+      .cta-section { grid-template-columns: 1fr; padding: 6rem 1.75rem; gap: 4rem; }
+      footer { flex-direction: column; gap: 1.5rem; padding: 2.5rem 1.75rem; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+
+    /* ─── RESPONSIVE MOBILE (≤ 540px) ────────────────── */
+    @media (max-width: 540px) {
+      nav { padding: 0.9rem 1.25rem; }
+
+      .hero {
+        padding: 5.5rem 1.25rem 4rem;
+        min-height: 100svh;
+        align-items: flex-start;
+        padding-top: 5.5rem;
+      }
+
+      .hero-label { font-size: 0.72rem; margin-bottom: 1.25rem; }
+
+      .hero-headline {
+        font-size: clamp(3rem, 13.5vw, 4.5rem);
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-sub {
+        font-size: 1rem; max-width: 100%;
+        margin-bottom: 2.25rem;
+      }
+
+      .hero-btns { flex-direction: column; align-items: stretch; gap: 0.85rem; }
+      .btn-primary { text-align: center; padding: 1.15rem 1.5rem; }
+      .btn-ghost { text-align: center; align-self: center; }
+
+      .insight { padding: 4.5rem 1.25rem; gap: 2.5rem; }
+      .insight-headline { font-size: clamp(2.4rem, 10vw, 3.5rem); }
+      .insight-text { font-size: 1rem; margin-bottom: 2rem; }
+
+      .stats { gap: 2rem; }
+      .stat-num { font-size: 3rem; }
+      .stat-num sup { font-size: 1.4rem; }
+
+      .services { padding: 4.5rem 1.25rem; }
+      .services-grid { gap: 1rem; }
+      .scard { padding: 1.75rem; border-radius: 1.25rem; }
+      .scard-title { font-size: 1.55rem; }
+      .scard-text { font-size: 0.95rem; }
+
+      .manifesto { padding: 5rem 1.25rem; }
+      .manifesto-sub { font-size: 1rem; margin-top: 2rem; }
+
+      .why { padding: 4.5rem 1.25rem; gap: 2rem; }
+      .why-row { gap: 1.25rem; padding-bottom: 2rem; }
+      .why-row-title { font-size: 1.2rem; }
+      .why-row-text { font-size: 0.95rem; }
+
+      .cta-section { padding: 4.5rem 1.25rem; gap: 2.75rem; }
+      .cta-headline { font-size: clamp(2.5rem, 12vw, 4rem); }
+      .cta-sub { font-size: 1rem; }
+      .cta-btn { padding: 1.2rem 1.5rem; font-size: 0.95rem; }
+
+      footer { padding: 2rem 1.25rem; gap: 1.25rem; }
+      .footer-copy { font-size: 0.76rem; }
+
+      .mobile-menu { padding: 5.5rem 1.5rem 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ─────────────────────────────────────────── -->
+  <nav id="nav">
+    <!-- Logo: lege comfy-logo.png (freigestellt) in dasselbe Verzeichnis wie diese HTML-Datei -->
+    <a href="#" class="nav-logo">
+      <img src="comfy-logo.png" alt="comfy.">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#why">Warum wir</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+      <li>
+        <a href="https://wa.me/436604240704" target="_blank" rel="noopener" class="nav-cta">
+          WhatsApp
+        </a>
+      </li>
+      <li>
+        <a href="mailto:social@agentu.at" class="nav-cta">
+          E-Mail
+        </a>
+      </li>
+    </ul>
+    <button class="nav-hamburger" id="menuBtn" aria-label="Menü öffnen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ─── MOBILE MENU ────────────────────────────────── -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <nav class="mobile-menu-nav">
+      <a href="#services" class="mobile-menu-link">Services</a>
+      <a href="#why" class="mobile-menu-link">Warum wir</a>
+      <a href="#kontakt" class="mobile-menu-link">Kontakt</a>
+    </nav>
+    <div class="mobile-menu-divider"></div>
+    <div class="mobile-menu-btns">
+      <a href="https://wa.me/436604240704" target="_blank" rel="noopener" class="mobile-btn mobile-menu-link">
+        💬 WhatsApp schreiben
+      </a>
+      <a href="mailto:social@agentu.at" class="mobile-btn mobile-menu-link">
+        ✉️ E-Mail senden
+      </a>
+    </div>
+  </div>
+
+  <!-- ─── HERO ─────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-label reveal">Wien &nbsp;/&nbsp; Creative Online Marketing For You</p>
+      <h1 class="hero-headline reveal reveal-d1">
+        Marketing,<br>das sich<br>richtig<br>anfühlt.
+      </h1>
+      <p class="hero-sub reveal reveal-d2">
+        Wir bringen Unternehmen dorthin, wo die Zukunft bereits stattfindet — online, auf Social Media, im Feed deiner Zielgruppe.
+      </p>
+      <div class="hero-btns reveal reveal-d3">
+        <a href="#kontakt" class="btn-primary">Jetzt starten</a>
+        <a href="#services" class="btn-ghost">Unsere Services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TICKER ────────────────────────────────────────── -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <!-- doubled for seamless loop -->
+      <span class="ticker-item">Content Marketing <span>✦</span></span>
+      <span class="ticker-item">Paid Ads <span>✦</span></span>
+      <span class="ticker-item">Social Media <span>✦</span></span>
+      <span class="ticker-item">Performance Marketing <span>✦</span></span>
+      <span class="ticker-item">Reels &amp; Stories <span>✦</span></span>
+      <span class="ticker-item">Wien &amp; DACH <span>✦</span></span>
+      <span class="ticker-item">AI-gestützt <span>✦</span></span>
+      <span class="ticker-item">Content Marketing <span>✦</span></span>
+      <span class="ticker-item">Paid Ads <span>✦</span></span>
+      <span class="ticker-item">Social Media <span>✦</span></span>
+      <span class="ticker-item">Performance Marketing <span>✦</span></span>
+      <span class="ticker-item">Reels &amp; Stories <span>✦</span></span>
+      <span class="ticker-item">Wien &amp; DACH <span>✦</span></span>
+      <span class="ticker-item">AI-gestützt <span>✦</span></span>
+    </div>
+  </div>
+
+  <!-- ─── INSIGHT ───────────────────────────────────────── -->
+  <section class="insight">
+    <div>
+      <p class="section-label reveal">Die Realität</p>
+      <h2 class="insight-headline reveal reveal-d1">
+        Die Zukunft<br>ist schon da.<br>Sie heißt:<br>Online.
+      </h2>
+    </div>
+    <div>
+      <p class="insight-text reveal">
+        Wer heute nicht sichtbar ist, existiert morgen nicht. Deine Zielgruppe ist auf Social Media, scrollt durch Feeds, schaut Reels — und entscheidet in Sekunden, wem sie ihre Aufmerksamkeit schenkt. Wir sorgen dafür, dass du diese Sekunde gewinnst.
+      </p>
+      <div class="stats">
+        <div class="reveal reveal-d1">
+          <div class="stat-num">4.9<sup>B</sup></div>
+          <div class="stat-lbl">Social Media<br>User weltweit</div>
+        </div>
+        <div class="reveal reveal-d2">
+          <div class="stat-num">2.5<sup>h</sup></div>
+          <div class="stat-lbl">Ø täglich auf<br>Social Media</div>
+        </div>
+        <div class="reveal reveal-d3">
+          <div class="stat-num">73<sup>%</sup></div>
+          <div class="stat-lbl">Kaufentscheidungen<br>via Social</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SERVICES ─────────────────────────────────────── -->
+  <section class="services" id="services">
+    <div class="services-header">
+      <div>
+        <p class="section-label" style="color:var(--lilac)">Was wir tun</p>
+        <h2 class="services-title reveal">Alles aus<br>einer <span class="accent">Hand.</span></h2>
+      </div>
+      <p class="services-sub reveal reveal-d1">
+        Zwei Disziplinen, ein Ziel: deine Marke dort sichtbar machen, wo deine Zielgruppe wirklich ist.
+      </p>
+    </div>
+
+    <div class="services-grid">
+      <div class="scard reveal">
+        <span class="scard-num">01</span>
+        <span class="scard-tag">Content Marketing</span>
+        <h3 class="scard-title">Content,<br>der wirklich<br>hängenbleibt.</h3>
+        <p class="scard-text">
+          Wir produzieren Inhalte, die scrollen stoppen. Informativ, kreativ, viral — Content der nicht nur gut aussieht, sondern konvertiert.
+        </p>
+        <div class="scard-pills">
+          <span class="pill">Posts</span>
+          <span class="pill">Reels</span>
+          <span class="pill">Stories</span>
+          <span class="pill">Carousels</span>
+          <span class="pill">UGC</span>
+          <span class="pill">Copywriting</span>
+        </div>
+      </div>
+
+      <div class="scard reveal reveal-d2">
+        <span class="scard-num">02</span>
+        <span class="scard-tag">Performance Marketing</span>
+        <h3 class="scard-title">Ads, die<br>nicht nur<br>kosten.</h3>
+        <p class="scard-text">
+          Paid Ads, die echte Ergebnisse liefern — nicht nur Reichweite, sondern Resultate. Messbar, skalierbar, auf Erfolg ausgerichtet.
+        </p>
+        <div class="scard-pills">
+          <span class="pill">Meta Ads</span>
+          <span class="pill">TikTok Ads</span>
+          <span class="pill">Google Ads</span>
+          <span class="pill">Retargeting</span>
+          <span class="pill">Analytics</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MANIFESTO ─────────────────────────────────────── -->
+  <section class="manifesto">
+    <!-- background paint smear -->
+    <svg class="manifesto-paint" viewBox="0 0 900 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="paint-mani">
+          <feTurbulence type="fractalNoise" baseFrequency="0.02 0.04" numOctaves="3" seed="9"/>
+          <feDisplacementMap in="SourceGraphic" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+      </defs>
+      <path d="M -50 150 C 150 80 400 220 600 130 C 780 50 900 180 980 150"
+            stroke="#c4a8d4" stroke-width="110" stroke-linecap="round"
+            fill="none" filter="url(#paint-mani)"/>
+    </svg>
+
+    <div class="reveal">
+      <h2 class="manifesto-quote">
+        Marketing,<br>das <span class="accent">wirkt.</span>
+      </h2>
+      <p class="manifesto-sub">
+        Weil gute Ideen eine Halbwertszeit haben — und wir schneller sind.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── WHY ───────────────────────────────────────────── -->
+  <section class="why" id="why">
+    <div class="why-sticky">
+      <p class="section-label reveal">Warum comfy.</p>
+      <h2 class="why-title reveal reveal-d1">Was uns<br>unter&shy;scheidet.</h2>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-row reveal">
+        <span class="why-row-num">01</span>
+        <div>
+          <h3 class="why-row-title">AI als Werkzeug.<br>Nicht als Buzzword.</h3>
+          <p class="why-row-text">Wir arbeiten mit KI, wie andere mit Erfahrung arbeiten. Das Ergebnis ist beides — schneller, smarter, besser skalierbar.</p>
+        </div>
+      </div>
+      <div class="why-row reveal reveal-d1">
+        <span class="why-row-num">02</span>
+        <div>
+          <h3 class="why-row-title">Online ist unser Heimspiel.</h3>
+          <p class="why-row-text">Wir wissen, was auf Social funktioniert — weil wir genau dort zu Hause sind. Algorithmen, Trends, Formate: wir checken das täglich.</p>
+        </div>
+      </div>
+      <div class="why-row reveal reveal-d2">
+        <span class="why-row-num">03</span>
+        <div>
+          <h3 class="why-row-title">DACH fokussiert.<br>Global gedacht.</h3>
+          <p class="why-row-text">Basiert in Wien, zuhause im DACH-Raum. Wir kennen den Markt, die Sprache und die Kultur deiner Zielgruppe.</p>
+        </div>
+      </div>
+      <div class="why-row reveal reveal-d3">
+        <span class="why-row-num">04</span>
+        <div>
+          <h3 class="why-row-title">Beides. Aus einer Hand.</h3>
+          <p class="why-row-text">Content und Performance — kombiniert, aufeinander abgestimmt, auf Ergebnis ausgerichtet. Kein Briefing. Kein Ping-Pong.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ───────────────────────────────────────────── -->
+  <section class="cta-section" id="kontakt">
+    <div>
+      <h2 class="cta-headline reveal">
+        Bereit,<br>dort zu<br>sein wo<br><span class="accent">alle<br>hinschauen?</span>
+      </h2>
+      <p class="cta-sub reveal reveal-d1">
+        Schreib uns. Kein Formular-Bingo, kein Funnel. Einfach ein echtes Gespräch.
+      </p>
+    </div>
+
+    <div class="cta-btns reveal reveal-d2">
+      <a href="https://wa.me/436604240704" target="_blank" rel="noopener" class="cta-btn">
+        <span class="cta-btn-icon">💬</span>
+        WhatsApp schreiben
+      </a>
+      <a href="mailto:social@agentu.at" class="cta-btn">
+        <span class="cta-btn-icon">✉️</span>
+        E-Mail senden
+      </a>
+    </div>
+
+    <!-- bg paint decoration -->
+    <svg style="position:absolute;right:-5%;top:-10%;width:50%;opacity:0.12;pointer-events:none" viewBox="0 0 400 700" fill="none">
+      <defs>
+        <filter id="paint-cta">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035 0.015" numOctaves="3" seed="3"/>
+          <feDisplacementMap in="SourceGraphic" scale="12" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+      </defs>
+      <path d="M 350 -20 C 400 120 180 280 300 430 C 420 580 380 680 320 750"
+            stroke="#c4a8d4" stroke-width="100" stroke-linecap="round"
+            fill="none" filter="url(#paint-cta)"/>
+    </svg>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────── -->
+  <footer>
+    <!-- Logo: dieselbe comfy-logo.png wie im Nav -->
+    <a href="#" class="nav-logo">
+      <img src="comfy-logo.png" alt="comfy.">
+    </a>
+    <span class="footer-copy">© 2025 comfy. — Creative Online Marketing For You · Wien</span>
+    <div class="footer-links">
+      <a href="#">Impressum</a>
+      <a href="#">Datenschutz</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Nav shadow on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 30);
+    });
+
+    // Mobile hamburger menu
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileLinks = document.querySelectorAll('.mobile-menu-link');
+
+    function openMenu() {
+      mobileMenu.classList.add('open');
+      menuBtn.classList.add('open');
+      document.body.classList.add('menu-open');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      menuBtn.setAttribute('aria-label', 'Menü schließen');
+    }
+
+    function closeMenu() {
+      mobileMenu.classList.remove('open');
+      menuBtn.classList.remove('open');
+      document.body.classList.remove('menu-open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      menuBtn.setAttribute('aria-label', 'Menü öffnen');
+    }
+
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
+    });
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMenu();
+    });
+  </script>
+</body>
+</html>
 
