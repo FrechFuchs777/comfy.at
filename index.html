@@ -42,7 +42,7 @@
       color: var(--blue); text-decoration: none; flex-shrink: 0;
     }
     .nav-logo img {
-      height: 38px;
+      height: 110px;
       mix-blend-mode: multiply;
     }
 
@@ -91,47 +91,64 @@
       position: fixed; inset: 0; z-index: 195;
       background: var(--cream);
       display: flex; flex-direction: column;
-      justify-content: center; align-items: flex-start;
-      padding: 7rem 2.5rem 3rem;
+      justify-content: space-between;
+      padding: 6rem 2rem 3rem;
       transform: translateX(100%);
       transition: transform 0.45s cubic-bezier(0.77, 0, 0.175, 1);
+      overflow-y: auto;
     }
     .mobile-menu.open { transform: translateX(0); }
 
+    /* Top section: navigation links */
     .mobile-menu-nav {
-      display: flex; flex-direction: column; gap: 0.2rem;
-      width: 100%; margin-bottom: 3rem;
+      display: flex; flex-direction: column; gap: 0;
+      width: 100%;
     }
     .mobile-menu-nav a {
-      font-size: clamp(2.2rem, 10vw, 3.2rem);
+      font-size: clamp(2.4rem, 11vw, 3.4rem);
       font-weight: 900; text-transform: uppercase;
       color: var(--blue); text-decoration: none;
-      letter-spacing: -0.03em; line-height: 1.2;
-      opacity: 0.8; transition: opacity 0.2s;
-      padding: 0.2rem 0;
+      letter-spacing: -0.03em; line-height: 1;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(19,23,91,0.08);
+      transition: color 0.2s;
     }
-    .mobile-menu-nav a:hover { opacity: 1; }
-
-    .mobile-menu-divider {
-      width: 100%; height: 1px;
-      background: rgba(19,23,91,0.1); margin-bottom: 2rem;
+    .mobile-menu-nav a::after {
+      content: '→';
+      font-size: 1.4rem; opacity: 0.3;
+      transition: opacity 0.2s, transform 0.2s;
+      transform: translateX(0);
     }
+    .mobile-menu-nav a:hover { color: var(--lilac); }
+    .mobile-menu-nav a:hover::after { opacity: 1; transform: translateX(5px); }
+    .mobile-menu-nav a:last-child { border-bottom: none; }
 
+    /* Bottom section: contact */
+    .mobile-menu-contact {
+      margin-top: auto; padding-top: 2.5rem;
+    }
+    .mobile-menu-contact-label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--lilac); margin-bottom: 1rem;
+    }
     .mobile-menu-btns {
-      display: flex; flex-direction: column; gap: 0.85rem; width: 100%;
+      display: flex; flex-direction: column; gap: 0.75rem; width: 100%;
     }
     .mobile-btn {
       display: flex; align-items: center; justify-content: center;
       gap: 0.65rem; width: 100%;
-      padding: 1.15rem 1.5rem; border-radius: 50px;
+      padding: 1.1rem 1.5rem; border-radius: 50px;
       font-family: 'Barlow', sans-serif;
-      font-size: 1rem; font-weight: 800;
-      text-decoration: none; letter-spacing: 0.06em;
+      font-size: 0.95rem; font-weight: 800;
+      text-decoration: none; letter-spacing: 0.07em;
       text-transform: uppercase; transition: 0.2s;
       color: var(--blue); border: 2px solid var(--blue);
       background: transparent;
     }
-    .mobile-btn:hover { background: var(--blue); color: var(--cream); }
+    .mobile-btn:hover,
+    .mobile-btn:active { background: var(--blue); color: var(--cream); }
 
     /* ─── HERO ────────────────────────────────────────── */
     .hero {
@@ -476,7 +493,8 @@
 
     /* ─── RESPONSIVE MOBILE (≤ 540px) ────────────────── */
     @media (max-width: 540px) {
-      nav { padding: 0.9rem 1.25rem; }
+      nav { padding: 0.75rem 1.25rem; }
+      .nav-logo img { height: 70px; }
 
       .hero {
         padding: 5.5rem 1.25rem 4rem;
@@ -572,14 +590,16 @@
       <a href="#why" class="mobile-menu-link">Warum wir</a>
       <a href="#kontakt" class="mobile-menu-link">Kontakt</a>
     </nav>
-    <div class="mobile-menu-divider"></div>
-    <div class="mobile-menu-btns">
-      <a href="https://wa.me/436604240704" target="_blank" rel="noopener" class="mobile-btn mobile-menu-link">
-        💬 WhatsApp schreiben
-      </a>
-      <a href="mailto:social@agentu.at" class="mobile-btn mobile-menu-link">
-        ✉️ E-Mail senden
-      </a>
+    <div class="mobile-menu-contact">
+      <p class="mobile-menu-contact-label">Direkt schreiben</p>
+      <div class="mobile-menu-btns">
+        <a href="https://wa.me/436604240704" target="_blank" rel="noopener" class="mobile-btn mobile-menu-link">
+          💬 WhatsApp
+        </a>
+        <a href="mailto:social@agentu.at" class="mobile-btn mobile-menu-link">
+          ✉️ E-Mail
+        </a>
+      </div>
     </div>
   </div>
 
@@ -867,4 +887,3 @@
   </script>
 </body>
 </html>
-
