@@ -31,11 +31,14 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       display: flex; align-items: center; justify-content: space-between;
       padding: 1.4rem 5rem;
-      background: var(--cream);
-      border-bottom: 1px solid rgba(19,23,91,0.08);
-      transition: box-shadow 0.3s;
+      background: var(--lilac);
+      border-bottom: 1px solid rgba(19,23,91,0.12);
+      transition: box-shadow 0.3s, border-color 0.3s;
     }
-    nav.scrolled { box-shadow: 0 4px 30px rgba(19,23,91,0.06); }
+    nav.scrolled {
+      box-shadow: 0 4px 24px rgba(19,23,91,0.14);
+      border-bottom-color: rgba(19,23,91,0.22);
+    }
 
     .nav-logo {
       font-size: 1.6rem; font-weight: 900; letter-spacing: -0.03em;
@@ -49,25 +52,29 @@
     .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
     .nav-links a {
       text-decoration: none; color: var(--blue);
-      font-weight: 600; font-size: 0.9rem; letter-spacing: 0.04em;
-      text-transform: uppercase; opacity: 0.7;
+      font-weight: 700; font-size: 0.9rem; letter-spacing: 0.04em;
+      text-transform: uppercase; opacity: 0.75;
       transition: opacity 0.2s;
     }
     .nav-links a:hover { opacity: 1; }
 
-    /* Both nav CTA buttons — same outline style */
+    /* Both nav CTA buttons — ghost on lilac, filled on hover */
     .nav-cta {
       background: transparent; color: var(--blue);
       padding: 0.65rem 1.4rem; border-radius: 50px;
       font-weight: 800; font-size: 0.85rem;
       text-decoration: none; letter-spacing: 0.06em;
       text-transform: uppercase;
-      border: 2px solid var(--blue);
-      transition: background 0.2s, color 0.2s;
-      opacity: 1 !important;
+      border: 2px solid rgba(19,23,91,0.3);
+      transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+      opacity: 0.65;
       white-space: nowrap;
     }
-    .nav-cta:hover { background: var(--blue); color: var(--cream); opacity: 1 !important; }
+    .nav-cta:hover {
+      background: var(--blue); color: var(--lilac);
+      border-color: var(--blue);
+      opacity: 1 !important;
+    }
 
     /* ─── HAMBURGER ───────────────────────────────────── */
     .nav-hamburger {
@@ -81,6 +88,7 @@
       background: var(--blue); border-radius: 2px;
       transition: transform 0.35s ease, opacity 0.3s ease;
       transform-origin: center;
+      opacity: 0.85;
     }
     .nav-hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
     .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
@@ -159,7 +167,7 @@
       position: relative; overflow: hidden;
     }
 
-    .hero-left { position: relative; z-index: 3; }
+    .hero-left { position: relative; z-index: 3; padding-top: 2.5rem; }
 
     .hero-label {
       font-size: 0.8rem; font-weight: 700;
@@ -169,10 +177,58 @@
 
     .hero-headline {
       font-size: clamp(3.8rem, 7.5vw, 7.5rem);
-      font-weight: 900; line-height: 0.93;
+      font-weight: 900; line-height: 0.97;
       letter-spacing: -0.025em; text-transform: uppercase;
       margin-bottom: 2rem;
     }
+
+    /* ─── HERO HEADLINE ENTRANCE ANIMATION ───────────── */
+    /*
+      Zwei-Ebenen-Effekt:
+      1. Das ganze h1 zoomt von groß (~200%) auf 100%, mit Blur der sich auflöst
+      2. Gleichzeitig gleitet jede Zeile einzeln von unten in den Clip
+      Ergebnis: cinematic "kommt auf dich zu" + zeilenweiser Stagger-Reveal
+    */
+
+    .hero-headline {
+      transform-origin: left center;
+      animation: headlineZoom 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: 0.05s;
+    }
+    @keyframes headlineZoom {
+      0% {
+        transform: scale(var(--hero-zoom, 2.1));
+        filter: blur(var(--hero-blur, 20px));
+        opacity: 0;
+      }
+      18% { opacity: 1; }
+      100% {
+        transform: scale(1);
+        filter: blur(0);
+        opacity: 1;
+      }
+    }
+
+    .hero-line {
+      display: block;
+      overflow: hidden;
+      /* Padding-top gibt Umlauten (ü, ä, ö) Luft nach oben;
+         negatives Margin kompensiert damit Zeilenabstand gleich bleibt */
+      padding-top: 0.18em;
+      margin-top: -0.18em;
+    }
+    .hero-line-inner {
+      display: block;
+      animation: heroLineUp 1.0s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(0.08s + var(--i) * 0.14s);
+    }
+    @keyframes heroLineUp {
+      from { transform: translateY(112%); }
+      to   { transform: translateY(0); }
+    }
+
+    /* Accent color — global, works in hero and everywhere */
+    .accent { color: var(--lilac); }
 
     .hero-sub {
       font-size: 1.15rem; font-weight: 400;
@@ -328,31 +384,6 @@
       letter-spacing: 0.06em;
     }
 
-    /* ─── MANIFESTO ───────────────────────────────────── */
-    .manifesto {
-      padding: 10rem 5rem;
-      text-align: center; position: relative; overflow: hidden;
-    }
-
-    .manifesto-quote {
-      font-size: clamp(3rem, 8vw, 8.5rem);
-      font-weight: 900; text-transform: uppercase;
-      line-height: 0.9; letter-spacing: -0.03em;
-      position: relative; z-index: 2;
-    }
-    .manifesto-quote .accent { color: var(--lilac); }
-
-    .manifesto-sub {
-      font-size: 1.2rem; color: var(--blue-dim);
-      margin-top: 3rem; font-weight: 400;
-      position: relative; z-index: 2;
-    }
-
-    .manifesto-paint {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 80%; opacity: 0.45; pointer-events: none;
-    }
 
     /* ─── WHY ─────────────────────────────────────────── */
     .why {
@@ -470,6 +501,15 @@
     .reveal-d3 { transition-delay: 0.3s; }
     .reveal-d4 { transition-delay: 0.4s; }
 
+    /* ─── HERO ANIMATION – MOBILE SCALE-DOWN ─────────── */
+    /* Kleinere Screens brauchen weniger aggressiven Zoom */
+    @media (max-width: 900px) {
+      .hero-headline { --hero-zoom: 1.7; --hero-blur: 14px; }
+    }
+    @media (max-width: 540px) {
+      .hero-headline { --hero-zoom: 1.45; --hero-blur: 8px; }
+    }
+
     /* ─── RESPONSIVE TABLET (≤ 900px) ────────────────── */
     @media (max-width: 900px) {
       nav { padding: 1.1rem 1.75rem; }
@@ -483,7 +523,6 @@
       .services-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
       .services-sub { text-align: left; max-width: 100%; }
       .services-grid { grid-template-columns: 1fr; }
-      .manifesto { padding: 7rem 1.75rem; }
       .why { grid-template-columns: 1fr; padding: 6rem 1.75rem; gap: 3rem; }
       .why-sticky { position: static; }
       .cta-section { grid-template-columns: 1fr; padding: 6rem 1.75rem; gap: 4rem; }
@@ -509,6 +548,7 @@
         font-size: clamp(3rem, 13.5vw, 4.5rem);
         margin-bottom: 1.5rem;
       }
+      .hero-left { padding-top: 1.5rem; }
 
       .hero-sub {
         font-size: 1rem; max-width: 100%;
@@ -532,9 +572,6 @@
       .scard { padding: 1.75rem; border-radius: 1.25rem; }
       .scard-title { font-size: 1.55rem; }
       .scard-text { font-size: 0.95rem; }
-
-      .manifesto { padding: 5rem 1.25rem; }
-      .manifesto-sub { font-size: 1rem; margin-top: 2rem; }
 
       .why { padding: 4.5rem 1.25rem; gap: 2rem; }
       .why-row { gap: 1.25rem; padding-bottom: 2rem; }
@@ -606,14 +643,18 @@
   <!-- ─── HERO ─────────────────────────────────────────── -->
   <section class="hero">
     <div class="hero-left">
-      <p class="hero-label reveal">Wien &nbsp;/&nbsp; Creative Online Marketing For You</p>
-      <h1 class="hero-headline reveal reveal-d1">
-        Marketing,<br>das sich<br>richtig<br>anfühlt.
+      <!-- Headline: each line slides up independently on page load -->
+      <h1 class="hero-headline">
+        <span class="hero-line" style="--i:0"><span class="hero-line-inner">Marketing,</span></span>
+        <span class="hero-line" style="--i:1"><span class="hero-line-inner">das sich</span></span>
+        <span class="hero-line" style="--i:2"><span class="hero-line-inner"><span class="accent">richtig</span></span></span>
+        <span class="hero-line" style="--i:3"><span class="hero-line-inner"><span class="accent">anfühlt.</span></span></span>
       </h1>
-      <p class="hero-sub reveal reveal-d2">
-        Wir bringen Unternehmen dorthin, wo die Zukunft bereits stattfindet — online, auf Social Media, im Feed deiner Zielgruppe.
+
+      <p class="hero-sub reveal reveal-d1">
+        Deine Kunden sind online. Wir sorgen dafür, dass sie dort auf dich treffen — im Feed, im Reel, in der Anzeige, die wirklich jemand anklickt.
       </p>
-      <div class="hero-btns reveal reveal-d3">
+      <div class="hero-btns reveal reveal-d2">
         <a href="#kontakt" class="btn-primary">Jetzt starten</a>
         <a href="#services" class="btn-ghost">Unsere Services</a>
       </div>
@@ -651,7 +692,7 @@
     </div>
     <div>
       <p class="insight-text reveal">
-        Wer heute nicht sichtbar ist, existiert morgen nicht. Deine Zielgruppe ist auf Social Media, scrollt durch Feeds, schaut Reels — und entscheidet in Sekunden, wem sie ihre Aufmerksamkeit schenkt. Wir sorgen dafür, dass du diese Sekunde gewinnst.
+        Deine Zielgruppe ist täglich online — scrollt, schaut, entscheidet. Und zwar schnell. Wer in diesen Feeds nicht vorkommt, verliert Aufmerksamkeit an jemanden, der es tut. Wir sind dafür da, dass du der bist, der vorkommt.
       </p>
       <div class="stats">
         <div class="reveal reveal-d1">
@@ -678,7 +719,7 @@
         <h2 class="services-title reveal">Alles aus<br>einer <span class="accent">Hand.</span></h2>
       </div>
       <p class="services-sub reveal reveal-d1">
-        Zwei Disziplinen, ein Ziel: deine Marke dort sichtbar machen, wo deine Zielgruppe wirklich ist.
+        Content, der hängenbleibt. Ads, die performen. Alles unter einem Dach.
       </p>
     </div>
 
@@ -688,7 +729,7 @@
         <span class="scard-tag">Content Marketing</span>
         <h3 class="scard-title">Content,<br>der wirklich<br>hängenbleibt.</h3>
         <p class="scard-text">
-          Wir produzieren Inhalte, die scrollen stoppen. Informativ, kreativ, viral — Content der nicht nur gut aussieht, sondern konvertiert.
+          Wir finden den Sweet Spot zwischen viral und wertvoll — Content der stoppt, unterhält und trotzdem etwas sagt. Kein leeres Scroll-Futter, keine trockenen Infoposts. Genau das Richtige dazwischen.
         </p>
         <div class="scard-pills">
           <span class="pill">Posts</span>
@@ -705,7 +746,7 @@
         <span class="scard-tag">Performance Marketing</span>
         <h3 class="scard-title">Ads, die<br>nicht nur<br>kosten.</h3>
         <p class="scard-text">
-          Paid Ads, die echte Ergebnisse liefern — nicht nur Reichweite, sondern Resultate. Messbar, skalierbar, auf Erfolg ausgerichtet.
+          Wir schalten Ads, die sich rechnen. Kein Blindflug — wir tracken, was funktioniert, und skalieren genau das.
         </p>
         <div class="scard-pills">
           <span class="pill">Meta Ads</span>
@@ -715,31 +756,6 @@
           <span class="pill">Analytics</span>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ─── MANIFESTO ─────────────────────────────────────── -->
-  <section class="manifesto">
-    <!-- background paint smear -->
-    <svg class="manifesto-paint" viewBox="0 0 900 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="paint-mani">
-          <feTurbulence type="fractalNoise" baseFrequency="0.02 0.04" numOctaves="3" seed="9"/>
-          <feDisplacementMap in="SourceGraphic" scale="18" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-      </defs>
-      <path d="M -50 150 C 150 80 400 220 600 130 C 780 50 900 180 980 150"
-            stroke="#c4a8d4" stroke-width="110" stroke-linecap="round"
-            fill="none" filter="url(#paint-mani)"/>
-    </svg>
-
-    <div class="reveal">
-      <h2 class="manifesto-quote">
-        Marketing,<br>das <span class="accent">wirkt.</span>
-      </h2>
-      <p class="manifesto-sub">
-        Weil gute Ideen eine Halbwertszeit haben — und wir schneller sind.
-      </p>
     </div>
   </section>
 
@@ -755,28 +771,28 @@
         <span class="why-row-num">01</span>
         <div>
           <h3 class="why-row-title">AI als Werkzeug.<br>Nicht als Buzzword.</h3>
-          <p class="why-row-text">Wir arbeiten mit KI, wie andere mit Erfahrung arbeiten. Das Ergebnis ist beides — schneller, smarter, besser skalierbar.</p>
+          <p class="why-row-text">Wir nutzen KI nicht weil's trendy ist, sondern weil es funktioniert. Schnellere Produktion, bessere Ergebnisse — ohne dass man's merkt.</p>
         </div>
       </div>
       <div class="why-row reveal reveal-d1">
         <span class="why-row-num">02</span>
         <div>
           <h3 class="why-row-title">Online ist unser Heimspiel.</h3>
-          <p class="why-row-text">Wir wissen, was auf Social funktioniert — weil wir genau dort zu Hause sind. Algorithmen, Trends, Formate: wir checken das täglich.</p>
+          <p class="why-row-text">Wir wissen, was auf Social funktioniert — weil wir selbst täglich drauf sind. Algorithmen, neue Formate, was gerade geht: wir haben das auf dem Schirm.</p>
         </div>
       </div>
       <div class="why-row reveal reveal-d2">
         <span class="why-row-num">03</span>
         <div>
           <h3 class="why-row-title">DACH fokussiert.<br>Global gedacht.</h3>
-          <p class="why-row-text">Basiert in Wien, zuhause im DACH-Raum. Wir kennen den Markt, die Sprache und die Kultur deiner Zielgruppe.</p>
+          <p class="why-row-text">Wir kommen aus Wien und arbeiten für Unternehmen im ganzen DACH-Raum. Den Markt, den Ton, die Kultur — den kennen wir.</p>
         </div>
       </div>
       <div class="why-row reveal reveal-d3">
         <span class="why-row-num">04</span>
         <div>
           <h3 class="why-row-title">Beides. Aus einer Hand.</h3>
-          <p class="why-row-text">Content und Performance — kombiniert, aufeinander abgestimmt, auf Ergebnis ausgerichtet. Kein Briefing. Kein Ping-Pong.</p>
+          <p class="why-row-text">Content und Performance aus einer Hand. Kein doppeltes Briefing, kein Hin und Her zwischen Agenturen. Bei uns läuft beides zusammen.</p>
         </div>
       </div>
     </div>
@@ -789,7 +805,7 @@
         Bereit,<br>dort zu<br>sein wo<br><span class="accent">alle<br>hinschauen?</span>
       </h2>
       <p class="cta-sub reveal reveal-d1">
-        Schreib uns. Kein Formular-Bingo, kein Funnel. Einfach ein echtes Gespräch.
+        Schreib uns — wir melden uns noch am selben Tag. Kein Vorlauf, kein Prozess. Einfach reden und schauen, ob's passt.
       </p>
     </div>
 
@@ -824,10 +840,12 @@
     <a href="#" class="nav-logo">
       <img src="comfy-logo.png" alt="comfy.">
     </a>
-    <span class="footer-copy">© 2025 comfy. — Creative Online Marketing For You · Wien</span>
+    <span class="footer-copy">© 2026 comfy. — Creative Online Marketing For You · Wien</span>
     <div class="footer-links">
-      <a href="#">Impressum</a>
-      <a href="#">Datenschutz</a>
+      <!-- Ersetze die URLs mit deinen GitHub-Raw-Links, z.B.:
+           https://raw.githubusercontent.com/DEIN-USER/DEIN-REPO/main/impressum.pdf -->
+      <a href="https://raw.githubusercontent.com/DEIN-USER/DEIN-REPO/main/impressum.pdf" target="_blank" rel="noopener">Impressum</a>
+      <a href="https://raw.githubusercontent.com/DEIN-USER/DEIN-REPO/main/datenschutz.pdf" target="_blank" rel="noopener">Datenschutz</a>
       <a href="#kontakt">Kontakt</a>
     </div>
   </footer>
