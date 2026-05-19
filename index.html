@@ -30,7 +30,7 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1.4rem 5rem;
+      padding: 0.6rem 5rem;
       background: var(--lilac);
       border-bottom: 1px solid rgba(19,23,91,0.12);
       transition: box-shadow 0.3s, border-color 0.3s;
@@ -43,10 +43,16 @@
     .nav-logo {
       font-size: 1.6rem; font-weight: 900; letter-spacing: -0.03em;
       color: var(--blue); text-decoration: none; flex-shrink: 0;
+      /* Clip the transparent canvas padding around the actual logo */
+      overflow: hidden;
+      height: 75px;
+      display: flex; align-items: center;
     }
     .nav-logo img {
-      height: 110px;
+      height: 280px;
+      margin-top: -100px;  /* shift up to center on logo text — adjust this if logo is off-center */
       mix-blend-mode: multiply;
+      flex-shrink: 0;
     }
 
     .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
@@ -163,11 +169,11 @@
       min-height: 100vh;
       display: grid; grid-template-columns: 1fr;
       align-items: center;
-      padding: 9rem 5rem 5rem;
+      padding: 7rem 5rem 5rem;
       position: relative; overflow: hidden;
     }
 
-    .hero-left { position: relative; z-index: 3; padding-top: 2.5rem; }
+    .hero-left { position: relative; z-index: 3; padding-top: 1rem; }
 
     .hero-label {
       font-size: 0.8rem; font-weight: 700;
@@ -477,7 +483,7 @@
       border-top: 1px solid rgba(19,23,91,0.1);
     }
 
-    .footer-logo img { height: 30px; mix-blend-mode: multiply; }
+    footer .nav-logo img { height: 280px; margin-top: -100px; mix-blend-mode: multiply; }
 
     .footer-copy {
       font-size: 0.82rem; color: rgba(19,23,91,0.4); font-weight: 500;
@@ -512,7 +518,7 @@
 
     /* ─── RESPONSIVE TABLET (≤ 900px) ────────────────── */
     @media (max-width: 900px) {
-      nav { padding: 1.1rem 1.75rem; }
+      nav { padding: 0.5rem 1.75rem; }
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
 
@@ -532,8 +538,9 @@
 
     /* ─── RESPONSIVE MOBILE (≤ 540px) ────────────────── */
     @media (max-width: 540px) {
-      nav { padding: 0.75rem 1.25rem; }
-      .nav-logo img { height: 70px; }
+      nav { padding: 0.4rem 1.25rem; }
+      .nav-logo { height: 50px; }
+      .nav-logo img { height: 185px; margin-top: -66px; }
 
       .hero {
         padding: 5.5rem 1.25rem 4rem;
@@ -548,7 +555,7 @@
         font-size: clamp(3rem, 13.5vw, 4.5rem);
         margin-bottom: 1.5rem;
       }
-      .hero-left { padding-top: 1.5rem; }
+      .hero-left { padding-top: 0.5rem; }
 
       .hero-sub {
         font-size: 1rem; max-width: 100%;
